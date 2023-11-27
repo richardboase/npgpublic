@@ -9,7 +9,7 @@ type Collection struct {
 	Options CollectionOptions `json:"options" firestore:"options"`
 }
 
-func NewCollection(name string, options *CollectionOptions) *Collection {
+func (project *Project) NewCollection(name string, options *CollectionOptions) *Collection {
 	c := &Collection{
 		Meta: NewInternals("collection"),
 		ID:   uuid.NewString(),
@@ -18,6 +18,7 @@ func NewCollection(name string, options *CollectionOptions) *Collection {
 	if options != nil {
 		c.Options = *options
 	}
+	c.Meta.Parent = project.ID
 	return c
 }
 
