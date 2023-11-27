@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/golangdaddy/gethealthy/models"
+	"github.com/richardboase/npgpublic/models"
 	"github.com/sirchorg/go/cloudfunc"
 	"github.com/sirchorg/go/common"
 )
