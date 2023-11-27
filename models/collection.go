@@ -11,7 +11,7 @@ type Collection struct {
 
 func NewCollection(name string, options *CollectionOptions) *Collection {
 	c := &Collection{
-		Meta: NewInternals("topic"),
+		Meta: NewInternals("collection"),
 		ID:   uuid.NewString(),
 		Name: name,
 	}

@@ -11,7 +11,7 @@ type Project struct {
 
 func NewProject(name, description string) *Project {
 	return &Project{
-		Meta:        NewInternals("topic"),
+		Meta:        NewInternals("project"),
 		ID:          uuid.NewString(),
 		Name:        name,
 		Description: description,
