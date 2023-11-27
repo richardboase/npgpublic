@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/richardboase/npgpublic/models"
-	"github.com/sirchorg/go/cloudfunc"
-	"github.com/sirchorg/go/common"
+	"github.com/richardboase/npgpublic/sdk/cloudfunc"
+	"github.com/richardboase/npgpublic/sdk/common"
 )
 
 const (

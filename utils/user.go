@@ -6,7 +6,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/richardboase/npgpublic/models"
-	"github.com/sirchorg/go/common"
+	"github.com/richardboase/npgpublic/sdk/common"
 	"google.golang.org/api/iterator"
 )
 

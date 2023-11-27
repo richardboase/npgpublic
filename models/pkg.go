@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sirchorg/go/cloudfunc"
+	"github.com/richardboase/npgpublic/sdk/cloudfunc"
 )
 
 func getTime() int64 {
