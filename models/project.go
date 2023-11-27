@@ -17,3 +17,6 @@ func NewProject(name, description string) *Project {
 		Description: description,
 	}
 }
+
+type ProjectOptions struct {
+}
