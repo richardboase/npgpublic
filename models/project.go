@@ -9,13 +9,16 @@ type Project struct {
 	Description string `json:"description" firestore:"description"`
 }
 
-func NewProject(name, description string) *Project {
-	return &Project{
+func (user *User) NewProject(name, description string) *Project {
+	p := &Project{
 		Meta:        NewInternals("project"),
 		ID:          uuid.NewString(),
 		Name:        name,
 		Description: description,
 	}
+	p.Meta.Parent = user.ID
+	p.Meta.Moderation.Admins = []string{user.ID}
+	return p
 }
 
 type ProjectOptions struct {
