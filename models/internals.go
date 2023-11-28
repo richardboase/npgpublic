@@ -22,7 +22,7 @@ func (n Internals) NewInternals(class string) Internals {
 	}
 	if len(n.ID) > 0 {
 		x.Context.Parent = n.ID
-		x.Context.Parents = append(n.Context.Parents, n.Class+"/"+n.ID)
+		x.Context.Parents = append(n.Context.Parents, n.ID)
 	}
 	return x
 }
