@@ -28,10 +28,10 @@ func (n Internals) NewInternals(class string) Internals {
 }
 
 type Internals struct {
-	ID    string `json:"id" firestore:"id"`
-	Class string
-	Context
-	Moderation
+	ID         string `json:"id" firestore:"id"`
+	Class      string
+	Context    Context
+	Moderation Moderation
 	Updated    bool
 	Searchable bool
 	Created    int64
@@ -39,9 +39,12 @@ type Internals struct {
 	Stats      map[string]int
 }
 
+func (i *Internals) FirestorePath() string {
+	return strings.Join(strings.Split(i.ID, ".")[1:], "/")
+}
+
 func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
-	path := strings.Join(strings.Split(i.ID, "."), "/")
-	return app.Firestore().Doc(path)
+	return app.Firestore().Doc(i.FirestorePath())
 }
 
 // Modify updates the timestamp

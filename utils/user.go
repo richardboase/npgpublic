@@ -21,7 +21,7 @@ func UserRefCollection(app *common.App, userRef models.UserRef, collectionID str
 
 // RegionCollection abstracts the handling of subdata to within the country/region
 func RegionCollection(app *common.App, user *models.User, collectionID string) *firestore.CollectionRef {
-	return app.Firestore().Collection("countries").Doc(user.Meta.Country).Collection("regions").Doc(user.Meta.Region).Collection(collectionID)
+	return app.Firestore().Collection("countries").Doc(user.Meta.Context.Country).Collection("regions").Doc(user.Meta.Context.Region).Collection(collectionID)
 }
 
 func GetUser(app *common.App, ref models.UserRef) (*models.User, error) {
