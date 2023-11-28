@@ -10,7 +10,7 @@ type Layer struct {
 
 func (collection *Collection) NewLayer(name string, options *LayerOptions) *Layer {
 	c := &Layer{
-		Meta: collection.Meta.NewInternals("layer"),
+		Meta: collection.Meta.NewInternals("layers"),
 		Name: name,
 	}
 	if options != nil {

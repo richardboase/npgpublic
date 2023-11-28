@@ -15,7 +15,7 @@ func (n Internals) NewInternals(class string) Internals {
 	timestamp := time.Now().UTC().Unix()
 
 	x := Internals{
-		ID:       uuid.NewString(),
+		ID:       n.ID + "." + class + "." + uuid.NewString(),
 		Class:    class,
 		Created:  timestamp,
 		Modified: timestamp,
@@ -39,6 +39,11 @@ type Internals struct {
 	Stats      map[string]int
 }
 
+func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
+	path := strings.Join(strings.Split(i.ID, "."), "/")
+	return app.Firestore().Doc(path)
+}
+
 // Modify updates the timestamp
 func (i *Internals) Modify() {
 	i.Modified = time.Now().UTC().Unix()
@@ -55,11 +60,6 @@ type Context struct {
 	Parents []string
 	Country string
 	Region  string
-}
-
-func (i *Context) Firestore(app *common.App) *firestore.DocumentRef {
-	path := strings.Join(i.Parents, "/")
-	return app.Firestore().Doc(path)
 }
 
 type Moderation struct {

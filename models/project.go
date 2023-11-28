@@ -8,7 +8,7 @@ type Project struct {
 
 func (user *User) NewProject(name, description string) *Project {
 	p := &Project{
-		Meta:        user.Meta.NewInternals("project"),
+		Meta:        user.Meta.NewInternals("projects"),
 		Name:        name,
 		Description: description,
 	}
