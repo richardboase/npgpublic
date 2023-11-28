@@ -1,6 +1,11 @@
 package models
 
-import "time"
+import (
+	"strings"
+	"time"
+
+	"github.com/richardboase/npgpublic/sdk/common"
+)
 
 // NewInternals returns a boilerplate internal object
 func NewInternals(class string) Internals {
@@ -17,6 +22,7 @@ func NewInternals(class string) Internals {
 type Internals struct {
 	Class      string
 	Parent     string
+	Parents    []string
 	Country    string
 	Region     string
 	Moderation struct {
@@ -50,4 +56,8 @@ func (i *Internals) Modify() {
 func (i *Internals) Update() {
 	i.Updated = true
 	i.Modify()
+}
+
+func (i *Internals) Firestore(app *common.App) string {
+	return strings.Join(i.Parents, "/")
 }
