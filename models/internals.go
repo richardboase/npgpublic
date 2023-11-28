@@ -4,7 +4,9 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/firestore"
 	"github.com/google/uuid"
+	"github.com/richardboase/npgpublic/sdk/common"
 )
 
 // NewInternals returns a boilerplate internal object
@@ -65,6 +67,14 @@ func (i *Internals) DocPath() string {
 	}
 
 	return strings.Join(outs, "/")
+}
+
+func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
+	return app.Firestore().Doc(i.DocPath())
+}
+
+func (i *Internals) FirestoreDoc(app *common.App, ii Internals) *firestore.DocumentRef {
+	return app.Firestore().Doc(i.DocPath()).Collection(ii.Class).Doc(ii.ID)
 }
 
 // Modify updates the timestamp
