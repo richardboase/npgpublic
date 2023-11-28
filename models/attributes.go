@@ -1,18 +1,18 @@
 package models
 
 type Attribute struct {
-	Meta    Internals
-	Name    string           `json:"name" firestore:"name"`
-	Options AttributeOptions `json:"options" firestore:"options"`
+	Meta Internals
+	Name string `json:"name" firestore:"name"`
+	Min  int    `json:"min" firestore:"min"`
+	Max  int    `json:"max" firestore:"max"`
 }
 
-func (collection *Collection) NewAttribute(name string, options *AttributeOptions) *Attribute {
+func (collection *Collection) NewAttribute(name string, min, max int) *Attribute {
 	c := &Attribute{
 		Meta: collection.Meta.NewInternals("attributes"),
 		Name: name,
-	}
-	if options != nil {
-		c.Options = *options
+		Min:  min,
+		Max:  max,
 	}
 	return c
 }
