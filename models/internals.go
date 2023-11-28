@@ -4,47 +4,39 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/firestore"
+	"github.com/google/uuid"
 	"github.com/richardboase/npgpublic/sdk/common"
 )
 
 // NewInternals returns a boilerplate internal object
-func NewInternals(class string) Internals {
+func (n Internals) NewInternals(class string) Internals {
 
 	timestamp := time.Now().UTC().Unix()
 
-	return Internals{
+	x := Internals{
+		ID:       uuid.NewString(),
 		Class:    class,
 		Created:  timestamp,
 		Modified: timestamp,
 	}
+	if len(n.ID) > 0 {
+		x.Context.Parent = n.ID
+		x.Context.Parents = append(n.Context.Parents, n.Class+"/"+n.ID)
+	}
+	return x
 }
 
 type Internals struct {
-	Class      string
-	Parent     string
-	Parents    []string
-	Country    string
-	Region     string
-	Moderation struct {
-		Admins       []string
-		Blocked      bool
-		BlockedTime  int64
-		BlockedBy    string
-		Approved     bool
-		ApprovedTime int64
-		ApprovedBy   string
-	}
+	ID    string `json:"id" firestore:"id"`
+	Class string
+	Context
+	Moderation
 	Updated    bool
 	Searchable bool
 	Created    int64
 	Modified   int64
-	Stats      struct {
-		Followers int64
-		Views     int64
-		Likes     int64
-		Replies   int64
-		Children  int64
-	}
+	Stats      map[string]int
 }
 
 // Modify updates the timestamp
@@ -58,6 +50,24 @@ func (i *Internals) Update() {
 	i.Modify()
 }
 
-func (i *Internals) Firestore(app *common.App) string {
-	return strings.Join(i.Parents, "/")
+type Context struct {
+	Parent  string
+	Parents []string
+	Country string
+	Region  string
+}
+
+func (i *Context) Firestore(app *common.App) *firestore.DocumentRef {
+	path := strings.Join(i.Parents, "/")
+	return app.Firestore().Doc(path)
+}
+
+type Moderation struct {
+	Admins       []string
+	Blocked      bool
+	BlockedTime  int64
+	BlockedBy    string
+	Approved     bool
+	ApprovedTime int64
+	ApprovedBy   string
 }

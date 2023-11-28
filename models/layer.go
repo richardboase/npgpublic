@@ -1,7 +1,5 @@
 package models
 
-import "github.com/google/uuid"
-
 type Layer struct {
 	Meta    Internals
 	ID      string       `json:"id" firestore:"id"`
@@ -12,14 +10,12 @@ type Layer struct {
 
 func (collection *Collection) NewLayer(name string, options *LayerOptions) *Layer {
 	c := &Layer{
-		Meta: NewInternals("collection"),
-		ID:   uuid.NewString(),
+		Meta: collection.Meta.NewInternals("layer"),
 		Name: name,
 	}
 	if options != nil {
 		c.Options = *options
 	}
-	c.Meta.Parent = collection.ID
 	return c
 }
 

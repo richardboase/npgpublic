@@ -4,8 +4,6 @@ import (
 	"log"
 	"regexp"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 type Users []*User
@@ -22,8 +20,7 @@ func DemoUser() *User {
 
 func NewUser(email, username string) *User {
 	user := &User{
-		Meta:     NewInternals("user"),
-		ID:       uuid.NewString(),
+		Meta:     (Internals{}).NewInternals("user"),
 		Email:    strings.ToLower(strings.TrimSpace(email)),
 		Username: strings.ToLower(strings.TrimSpace(username)),
 	}
