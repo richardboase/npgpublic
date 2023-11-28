@@ -20,6 +20,7 @@ type Internals struct {
 	Country    string
 	Region     string
 	Moderation struct {
+		Admins       []string
 		Blocked      bool
 		BlockedTime  int64
 		BlockedBy    string
