@@ -27,9 +27,6 @@ func NewUser(email, username string) *User {
 		Email:    strings.ToLower(strings.TrimSpace(email)),
 		Username: strings.ToLower(strings.TrimSpace(username)),
 	}
-	user.Profiles.Business.Meta = user.Meta
-	user.Profiles.Practitioner.Meta = user.Meta
-	user.Profiles.Personal.Meta = user.Meta
 	return user
 }
 
@@ -37,10 +34,9 @@ type User struct {
 	Meta Internals
 	ID   string
 	// user (0) or practitioner (1) or business (2)
-	Account  int      `json:"account" firestore:"account"`
-	Email    string   `json:"email" firestore:"email"`
-	Username string   `json:"username" firestore:"username"`
-	Profiles Profiles `json:"profiles" firestore:"profiles"`
+	Account  int    `json:"account" firestore:"account"`
+	Email    string `json:"email" firestore:"email"`
+	Username string `json:"username" firestore:"username"`
 }
 
 func (user *User) Ref() UserRef {
