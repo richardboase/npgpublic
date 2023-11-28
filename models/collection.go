@@ -8,7 +8,7 @@ type Collection struct {
 
 func (project *Project) NewCollection(name string, options *CollectionOptions) *Collection {
 	c := &Collection{
-		Meta: project.Meta.NewInternals("collection"),
+		Meta: project.Meta.NewInternals("collections"),
 		Name: name,
 	}
 	if options != nil {
