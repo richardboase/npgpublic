@@ -9,7 +9,7 @@ type Session struct {
 
 func (user *User) NewSession() *Session {
 	return &Session{
-		UserID:  user.ID,
+		UserID:  user.Meta.ID,
 		Expires: time.Now().UTC().Unix(),
 	}
 }

@@ -12,7 +12,7 @@ func (user *User) NewProject(name, description string) *Project {
 		Name:        name,
 		Description: description,
 	}
-	p.Meta.Moderation.Admins = []string{user.ID}
+	p.Meta.Moderation.Admins = []string{user.Meta.ID}
 	return p
 }
 

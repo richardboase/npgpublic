@@ -29,7 +29,6 @@ func NewUser(email, username string) *User {
 
 type User struct {
 	Meta Internals
-	ID   string
 	// user (0) or practitioner (1) or business (2)
 	Account  int    `json:"account" firestore:"account"`
 	Email    string `json:"email" firestore:"email"`
@@ -39,7 +38,7 @@ type User struct {
 func (user *User) Ref() UserRef {
 	return UserRef{
 		Account:  user.Account,
-		ID:       user.ID,
+		ID:       user.Meta.ID,
 		Username: user.Username,
 	}
 }

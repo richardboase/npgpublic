@@ -28,7 +28,7 @@ func (n Internals) NewInternals(class string) Internals {
 }
 
 type Internals struct {
-	ID         string `json:"id" firestore:"id"`
+	ID         string
 	Class      string
 	Context    Context
 	Moderation Moderation
