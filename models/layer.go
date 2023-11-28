@@ -2,7 +2,6 @@ package models
 
 type Layer struct {
 	Meta    Internals
-	ID      string       `json:"id" firestore:"id"`
 	Name    string       `json:"name" firestore:"name"`
 	Order   int          `json:"order" firestore:"order"`
 	Options LayerOptions `json:"options" firestore:"options"`
