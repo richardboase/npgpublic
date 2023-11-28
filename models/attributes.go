@@ -1,10 +1,11 @@
 package models
 
 type Attribute struct {
-	Meta Internals
-	Name string `json:"name" firestore:"name"`
-	Min  int    `json:"min" firestore:"min"`
-	Max  int    `json:"max" firestore:"max"`
+	Meta  Internals
+	Name  string `json:"name" firestore:"name"`
+	Min   int    `json:"min" firestore:"min"`
+	Max   int    `json:"max" firestore:"max"`
+	Value int    `json:"value" firestore:"value"`
 }
 
 func (collection *Collection) NewAttribute(name string, min, max int) *Attribute {
