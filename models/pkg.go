@@ -33,7 +33,7 @@ func AssertArrayOfStrings(w http.ResponseWriter, m map[string]interface{}, key s
 	for _, v := range a {
 		s, ok := v.(string)
 		if !ok {
-			err := fmt.Errorf("strings are required for this request", key)
+			err := fmt.Errorf("strings are required for this request: %s", key)
 			cloudfunc.HttpError(w, err, http.StatusBadRequest)
 			return nil, false
 		}

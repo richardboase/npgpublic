@@ -1,6 +1,23 @@
 package utils
 
-import "strings"
+import (
+	"context"
+	"strings"
+
+	"github.com/richardboase/npgpublic/sdk/common"
+)
+
+func GetDocument(app *common.App, id string, dst interface{}) error {
+
+	path := FirestorePath(id)
+	println("GET DOCUMENT", path)
+
+	doc, err := app.Firestore().Doc(path).Get(context.Background())
+	if err != nil {
+		return err
+	}
+	return doc.DataTo(dst)
+}
 
 func FirestorePath(id string) string {
 	p := strings.Split(string(id[1:]), ".")
