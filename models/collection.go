@@ -18,5 +18,7 @@ func (project *Project) NewCollection(name string, options *CollectionOptions) *
 }
 
 type CollectionOptions struct {
-	MaxMint int
+	MaxMint       int
+	ArtworkWidth  int
+	ArtworkHeight int
 }
