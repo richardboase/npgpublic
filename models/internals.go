@@ -15,7 +15,7 @@ func (n Internals) NewInternals(class string) Internals {
 	timestamp := time.Now().UTC().Unix()
 
 	x := Internals{
-		ID:       n.ID + "." + class + "-" + uuid.NewString()[:15],
+		ID:       n.ID + "." + class + "-" + uuid.NewString()[:13],
 		Class:    class,
 		Created:  timestamp,
 		Modified: timestamp,
