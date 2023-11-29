@@ -1,22 +1,18 @@
 package models
 
 type Layer struct {
-	Meta    Internals
-	Name    string       `json:"name" firestore:"name"`
-	Order   int          `json:"order" firestore:"order"`
-	Options LayerOptions `json:"options" firestore:"options"`
+	Meta  Internals
+	Name  string `json:"name" firestore:"name"`
+	Type  string `json:"type" firestore:"type"`
+	Order int    `json:"order" firestore:"order"`
 }
 
-func (collection *Collection) NewLayer(name string, options *LayerOptions) *Layer {
+func (collection *Collection) NewLayer(name, layerType string, order int) *Layer {
 	c := &Layer{
-		Meta: collection.Meta.NewInternals("layers"),
-		Name: name,
-	}
-	if options != nil {
-		c.Options = *options
+		Meta:  collection.Meta.NewInternals("layers"),
+		Name:  name,
+		Type:  layerType,
+		Order: order,
 	}
 	return c
-}
-
-type LayerOptions struct {
 }
