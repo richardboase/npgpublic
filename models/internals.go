@@ -33,7 +33,6 @@ type Internals struct {
 	Context    Context
 	Moderation Moderation
 	Updated    bool
-	Searchable bool
 	Created    int64
 	Modified   int64
 	Stats      map[string]int
