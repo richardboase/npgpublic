@@ -1,6 +1,7 @@
 package common
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -24,6 +25,10 @@ func NewApp() *App {
 	app.newClients()
 
 	return app
+}
+
+func (app *App) Context() context.Context {
+	return context.Background()
 }
 
 func (app *App) Debug(state bool) {
