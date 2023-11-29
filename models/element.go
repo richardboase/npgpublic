@@ -1,9 +1,9 @@
 package models
 
 type Element struct {
-	Meta    Internals
-	Name    string       `json:"name" firestore:"name"`
-	Options LayerOptions `json:"options" firestore:"options"`
+	Meta  Internals
+	Name  string `json:"name" firestore:"name"`
+	Image string `json:"image" firestore:"image"`
 }
 
 func (layer *Layer) NewElement(name string, options *LayerOptions) *Element {
@@ -11,11 +11,5 @@ func (layer *Layer) NewElement(name string, options *LayerOptions) *Element {
 		Meta: layer.Meta.NewInternals("elements"),
 		Name: name,
 	}
-	if options != nil {
-		c.Options = *options
-	}
 	return c
-}
-
-type ElementOptions struct {
 }
