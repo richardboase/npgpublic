@@ -24,6 +24,18 @@ func RegionCollection(app *common.App, user *models.User, collectionID string) *
 	return app.Firestore().Collection("countries").Doc(user.Meta.Context.Country).Collection("regions").Doc(user.Meta.Context.Region).Collection(collectionID)
 }
 
+func GetUserByUsername(app *common.App, username string) (*models.User, error) {
+	doc, err := app.Firestore().Collection("usernames").Doc(username).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+	record := &models.Username{}
+	if err := doc.DataTo(record); err != nil {
+		return nil, err
+	}
+	return GetUserByID(app, record.User.ID)
+}
+
 func GetUser(app *common.App, ref models.UserRef) (*models.User, error) {
 	return GetUserByID(app, ref.ID)
 }
