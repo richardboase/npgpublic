@@ -20,7 +20,7 @@ func DemoUser() *User {
 
 func NewUser(email, username string) *User {
 	user := &User{
-		Meta:     (Internals{}).NewInternals("user"),
+		Meta:     (Internals{}).NewInternals("users"),
 		Email:    strings.ToLower(strings.TrimSpace(email)),
 		Username: strings.ToLower(strings.TrimSpace(username)),
 	}
