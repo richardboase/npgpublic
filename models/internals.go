@@ -2,12 +2,14 @@ package models
 
 import (
 	"errors"
+	"log"
 	"strings"
 	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/google/uuid"
 	"github.com/richardboase/npgpublic/sdk/common"
+	"google.golang.org/api/iterator"
 )
 
 // NewInternals returns a boilerplate internal object
@@ -67,7 +69,24 @@ func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
 }
 
 func (i *Internals) FirestoreDoc(app *common.App, ii Internals) *firestore.DocumentRef {
-	return app.Firestore().Doc(i.DocPath()).Collection(ii.Class).Doc(ii.ID)
+	return i.Firestore(app).Collection(ii.Class).Doc(ii.ID)
+}
+
+func (i *Internals) FirestoreCount(app *common.App, collection string) int {
+	var count int
+	iter := i.Firestore(app).Collection(collection).Documents(app.Context())
+	for {
+		_, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Println(err)
+			break
+		}
+		count++
+	}
+	return count
 }
 
 func (i *Internals) GetParent(app *common.App, dst interface{}) error {
