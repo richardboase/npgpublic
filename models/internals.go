@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"strings"
 	"time"
 
@@ -61,6 +62,20 @@ func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
 
 func (i *Internals) FirestoreDoc(app *common.App, ii Internals) *firestore.DocumentRef {
 	return app.Firestore().Doc(i.DocPath()).Collection(ii.Class).Doc(ii.ID)
+}
+
+func (i *Internals) GetParent(app *common.App, dst interface{}) error {
+	if len(i.Context.Parents) == 0 {
+		return errors.New("GetParent: this object has no parent")
+	}
+	parent := &Internals{
+		ID: i.Context.Parents[len(i.Context.Parents)-1],
+	}
+	doc, err := parent.Firestore(app).Get(app.Context())
+	if err != nil {
+		return err
+	}
+	return doc.DataTo(dst)
 }
 
 // Modify updates the timestamp
