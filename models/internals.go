@@ -56,6 +56,12 @@ func (i *Internals) DocPath() string {
 	return strings.Join(outs, "/")
 }
 
+func (i *Internals) SaveToFirestore(app *common.App, src interface{}) error {
+	i.Modify()
+	_, err := i.Firestore(app).Set(app.Context(), src)
+	return err
+}
+
 func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
 	return app.Firestore().Doc(i.DocPath())
 }
