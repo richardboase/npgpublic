@@ -1,8 +1,16 @@
 package models
 
+import (
+	"net/http"
+
+	"github.com/golangdaddy/gethealthy/models"
+)
+
 type Job struct {
-	Meta   Internals
-	Status string `json:"status" firestore:"status"`
+	Meta    Internals
+	Name    string   `json:"name" firestore:"name"`
+	Status  string   `json:"status" firestore:"status"`
+	SubJobs []string `json:"subjobs" firestore:"subjobs"`
 }
 
 func (job *Job) NewJob(name, status string) *Job {
@@ -19,4 +27,15 @@ func (collection *Collection) NewJob(name, status string) *Job {
 		Status: status,
 	}
 	return c
+}
+
+func (job *Job) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
+
+	var exists bool
+	job.Name, exists = models.AssertKeyValue(w, m, "name")
+	if !exists {
+		return false
+	}
+	job.Status, exists = models.AssertKeyValue(w, m, "status")
+	return exists
 }
