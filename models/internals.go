@@ -12,6 +12,10 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+func Internal(id string) *Internals {
+	return &Internals{ID: id}
+}
+
 // NewInternals returns a boilerplate internal object
 func (n Internals) NewInternals(class string) Internals {
 
