@@ -10,7 +10,9 @@ type Job struct {
 	Meta    Internals
 	Name    string   `json:"name" firestore:"name"`
 	Status  string   `json:"status" firestore:"status"`
-	SubJobs []string `json:"subjobs" firestore:"subjobs"`
+	Jobs    []string `json:"subjobs" firestore:"subjobs"`
+	SubJobs map[string]*Job
+	JSON    string
 }
 
 func (job *Job) NewJob(name, status string) *Job {
