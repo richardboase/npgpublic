@@ -53,6 +53,7 @@ func ParseJSON(r *http.Request, dst interface{}) error {
 }
 
 func ServeJSON(w http.ResponseWriter, src interface{}) error {
+	w.Header().Set("Content-Type", "application/json")
 	b, err := json.Marshal(src)
 	if err != nil {
 		return err
