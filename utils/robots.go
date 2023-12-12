@@ -29,6 +29,8 @@ func CallRobot(target string, query *url.Values, dst interface{}) (interface{}, 
 		return nil, err
 	}
 
+	println("calling robot:", host)
+
 	client := resty.New()
 
 	response, err := client.R().SetResult(dst).Get(host)
