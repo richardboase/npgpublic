@@ -2,8 +2,6 @@ package models
 
 import (
 	"net/http"
-
-	"github.com/golangdaddy/gethealthy/models"
 )
 
 type Job struct {
@@ -34,10 +32,10 @@ func (collection *Collection) NewJob(name, status string) *Job {
 func (job *Job) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
 
 	var exists bool
-	job.Name, exists = models.AssertKeyValue(w, m, "name")
+	job.Name, exists = AssertKeyValue(w, m, "name")
 	if !exists {
 		return false
 	}
-	job.Status, exists = models.AssertKeyValue(w, m, "status")
+	job.Status, exists = AssertKeyValue(w, m, "status")
 	return exists
 }
