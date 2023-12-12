@@ -46,6 +46,7 @@ type Internals struct {
 }
 
 func (i *Internals) DocPath() string {
+	println("DOCPATH:", i.ID)
 	p := strings.Split(string(i.ID[1:]), ".")
 	parts := make([][]string, len(p))
 	k := ""
