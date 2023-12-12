@@ -2,14 +2,16 @@ package utils
 
 import (
 	"context"
-	"strings"
 
+	"github.com/richardboase/npgpublic/models"
 	"github.com/richardboase/npgpublic/sdk/common"
 )
 
 func GetDocument(app *common.App, id string, dst interface{}) error {
 
-	path := FirestorePath(id)
+	i := models.Internal(id)
+	path := i.DocPath()
+
 	println("GET DOCUMENT", path)
 
 	doc, err := app.Firestore().Doc(path).Get(context.Background())
@@ -17,21 +19,4 @@ func GetDocument(app *common.App, id string, dst interface{}) error {
 		return err
 	}
 	return doc.DataTo(dst)
-}
-
-func FirestorePath(id string) string {
-	p := strings.Split(string(id[1:]), ".")
-	parts := make([][]string, len(p))
-	k := ""
-	for x, s := range p {
-		k += "." + s
-		parts[x] = strings.Split(k, ".")
-
-	}
-	outs := []string{}
-	for _, p := range parts {
-		class := strings.Split(p[len(p)-1], "-")[0]
-		outs = append(outs, class+"/"+strings.Join(p, "."))
-	}
-	return strings.Join(outs, "/")
 }
