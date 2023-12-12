@@ -22,19 +22,19 @@ func getRobotURL(target string, query *url.Values) (string, error) {
 	return host + "?" + query.Encode(), nil
 }
 
-func CallRobot(target string, query *url.Values, dst interface{}) error {
+func CallRobot(target string, query *url.Values, dst interface{}) (interface{}, error) {
 
 	host, err := getRobotURL(target, query)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	client := resty.New()
 
-	_, err = client.R().SetResult(dst).Get(host)
+	response, err := client.R().SetResult(dst).Get(host)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return response.Result(), nil
 }
