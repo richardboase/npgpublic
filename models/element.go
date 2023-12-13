@@ -6,8 +6,9 @@ type Element struct {
 	Meta  Internals
 	Name  string `json:"name" firestore:"name"`
 	Image string `json:"image" firestore:"image"`
-	// manifets
-	Tags []*Tag `json:",omitempty" firestore:"-"`
+	// manifest
+	Tags       []*Tag
+	Attributes []*Attribute
 }
 
 func (layer *Layer) NewElement(name string) *Element {
