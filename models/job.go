@@ -19,7 +19,7 @@ type Stages struct {
 func (collection *Collection) NewJob(name, status string) *Job {
 	c := &Job{
 		Meta:   collection.Meta.NewInternals("jobs"),
-		Status: status,
+		Status: "pending",
 	}
 	return c
 }
