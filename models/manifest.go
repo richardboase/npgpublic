@@ -2,7 +2,7 @@ package models
 
 type Manifest struct {
 	Collection *Collection
-	Layers     []*Layer
+	Layers     map[string]*Layer
 	Attributes []*Attribute
 	Tags       []*Tag
 }
