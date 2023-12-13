@@ -5,8 +5,10 @@ import (
 )
 
 type Job struct {
-	Meta   Internals
+	Meta Internals
+	// pending:started:completed:failed
 	Status string `json:"status" firestore:"status"`
+	Stage  string `json:"stage" firestore:"stage"`
 	Stages Stages
 }
 
