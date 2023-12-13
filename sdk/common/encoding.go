@@ -16,6 +16,14 @@ func (app *App) UnmarshalJSON(b []byte, dst interface{}) error {
 	return json.Unmarshal(b, dst)
 }
 
+func (app *App) MarshalAndUnmarshalJSON(src, dst interface{}) error {
+	b, err := app.MarshalJSON(src)
+	if err != nil {
+		return err
+	}
+	return app.UnmarshalJSON(b, dst)
+}
+
 func (app *App) MarshalCBOR(x interface{}) ([]byte, error) {
 	return app.cbor.Marshal(x)
 }
