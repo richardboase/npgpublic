@@ -6,7 +6,6 @@ import (
 
 type Job struct {
 	Meta   Internals
-	Name   string `json:"name" firestore:"name"`
 	Status string `json:"status" firestore:"status"`
 	Stages Stages
 }
@@ -29,10 +28,6 @@ func (job *Job) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
 
 	var exists bool
 	job.Stages.IsPreview, exists = AssertKeyValueBool(w, m, "preview")
-	if !exists {
-		return false
-	}
-	job.Name, exists = AssertKeyValue(w, m, "name")
 	if !exists {
 		return false
 	}
