@@ -22,7 +22,7 @@ func getRobotURL(target string, query *url.Values) (string, error) {
 	return host + "?" + query.Encode(), nil
 }
 
-func CallRobot(target string, query *url.Values, dst interface{}) (interface{}, error) {
+func CallRobot(method, target string, query *url.Values, src, dst interface{}) (interface{}, error) {
 
 	host, err := getRobotURL(target, query)
 	if err != nil {
@@ -33,9 +33,19 @@ func CallRobot(target string, query *url.Values, dst interface{}) (interface{}, 
 
 	client := resty.New()
 
-	response, err := client.R().SetResult(dst).Get(host)
-	if err != nil {
-		return nil, err
+	var response *resty.Response
+
+	switch method {
+	case "GET":
+		response, err = client.R().SetResult(dst).Get(host)
+		if err != nil {
+			return nil, err
+		}
+	case "POST":
+		response, err = client.R().SetResult(dst).SetBody(src).Post(host)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return response.Result(), nil
