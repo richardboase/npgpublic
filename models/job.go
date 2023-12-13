@@ -5,20 +5,16 @@ import (
 )
 
 type Job struct {
-	Meta    Internals
-	Name    string          `json:"name" firestore:"name"`
-	Status  string          `json:"status" firestore:"status"`
-	Jobs    []string        `json:"jobs" firestore:"jobs"`
-	SubJobs map[string]*Job `json:"subjobs" firestore:"subjobs"`
-	JSON    string          `json:"json" firestore:"json"`
+	Meta   Internals
+	Name   string `json:"name" firestore:"name"`
+	Status string `json:"status" firestore:"status"`
+	Stages Stages
 }
 
-func (job *Job) NewJob(name, status string) *Job {
-	c := &Job{
-		Meta:   job.Meta.NewInternals("jobs"),
-		Status: status,
-	}
-	return c
+type Stages struct {
+	IsPreview bool
+	Prepare   interface{}
+	Generate  interface{}
 }
 
 func (collection *Collection) NewJob(name, status string) *Job {
@@ -32,6 +28,10 @@ func (collection *Collection) NewJob(name, status string) *Job {
 func (job *Job) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
 
 	var exists bool
+	job.Stages.IsPreview, exists = AssertKeyValueBool(w, m, "preview")
+	if !exists {
+		return false
+	}
 	job.Name, exists = AssertKeyValue(w, m, "name")
 	if !exists {
 		return false

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 
 	"github.com/go-resty/resty/v2"
@@ -29,7 +30,7 @@ func CallRobot(method, target string, query *url.Values, src, dst interface{}) (
 		return nil, err
 	}
 
-	println("calling robot:", host)
+	log.Println("calling robot:", method, host)
 
 	client := resty.New()
 
