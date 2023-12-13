@@ -2,6 +2,8 @@ package common
 
 import (
 	"context"
+	"crypto/rand"
+	"math/big"
 	"sync"
 	"time"
 
@@ -45,4 +47,9 @@ func (app *App) IsDebug() bool {
 
 func (app *App) TimeNow() time.Time {
 	return time.Now().UTC()
+}
+
+func (app *App) RandomNumber(x int) int {
+	n, _ := rand.Int(rand.Reader, big.NewInt(int64(x)))
+	return int(n.Int64())
 }
