@@ -6,8 +6,8 @@ type Layer struct {
 	Type  string `json:"type" firestore:"type"`
 	Order int    `json:"order" firestore:"order"`
 	// this is for building the manifest
-	Elements   []*Element `json:",omitempty" firestore:"-"`
-	Attributes *Attribute `json:",omitempty" firestore:"-"`
+	Elements   []*Element
+	Attributes *Attribute
 }
 
 func (collection *Collection) NewLayer(name, layerType string, order int) *Layer {
