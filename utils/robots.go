@@ -13,6 +13,10 @@ func getRobotURL(target string, query *url.Values) (string, error) {
 	host := "https://europe-west2-ninja-punk-girls.cloudfunctions.net/"
 
 	switch target {
+
+	case "generate":
+		host += "robot-generate"
+
 	case "prepare":
 		host += "robot-prepare"
 
