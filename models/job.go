@@ -10,6 +10,7 @@ type Job struct {
 	Status string `json:"status" firestore:"status"`
 	Stage  string `json:"stage" firestore:"stage"`
 	Stages Stages
+	Notes  []string `json:"notes" firestore:"notes"`
 }
 
 type Stages struct {
