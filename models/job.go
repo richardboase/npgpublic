@@ -10,13 +10,18 @@ type Job struct {
 	Status string `json:"status" firestore:"status"`
 	Stage  string `json:"stage" firestore:"stage"`
 	Stages Stages
-	Notes  []string `json:"notes" firestore:"notes"`
 }
 
 type Stages struct {
 	IsPreview bool
-	Prepare   interface{}
-	Generate  interface{}
+	Prepare   Stage
+	Generate  Stage
+}
+
+type Stage struct {
+	Data      interface{}
+	Notes     []string
+	Completed bool
 }
 
 func (collection *Collection) NewJob(name, status string) *Job {
