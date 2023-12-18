@@ -6,6 +6,7 @@ type Design struct {
 	Meta       Internals
 	Index      int               `json:"index" firestore:"index"`
 	Name       string            `json:"name" firestore:"name"`
+	Elements   []*Element        `json:"elements" firestore:"elements"`
 	Attributes []*Attribute      `json:"attributes" firestore:"attributes"`
 	Data       map[string]string `json:"data" firestore:"data"`
 }
