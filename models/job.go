@@ -12,6 +12,13 @@ type Job struct {
 	Stages Stages
 }
 
+type JobPreview struct {
+	Meta Internals
+	// pending:started:completed:failed
+	Status string `json:"status" firestore:"status"`
+	Stage  string `json:"stage" firestore:"stage"`
+}
+
 type Stages struct {
 	IsPreview bool
 	Prepare   Stage

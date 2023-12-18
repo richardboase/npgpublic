@@ -2,8 +2,8 @@ package models
 
 type Design struct {
 	Meta       Internals
-	Name       string            `json:"name" firestore:"name"`
 	Index      string            `json:"index" firestore:"index"`
+	Name       string            `json:"name" firestore:"name"`
 	Attributes []*Attribute      `json:"attributes" firestore:"attributes"`
 	Data       map[string]string `json:"data" firestore:"data"`
 }
