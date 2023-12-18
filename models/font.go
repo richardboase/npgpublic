@@ -7,7 +7,7 @@ type Font struct {
 
 func (layer *Layer) NewFont(name string) *Font {
 	c := &Font{
-		Meta: layer.Meta.NewInternals("elements"),
+		Meta: layer.Meta.NewInternals("fonts"),
 		Name: name,
 	}
 	return c
