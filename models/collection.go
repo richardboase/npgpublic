@@ -36,15 +36,9 @@ func (collection *Collection) ValidateInput(w http.ResponseWriter, m map[string]
 		return false
 	}
 
-	collection.Options.PrimaryFont, exists = AssertKeyValue(w, m, "primaryFont")
-	if !exists {
-		return false
-	}
-
-	collection.Options.SecondaryFont, exists = AssertKeyValue(w, m, "secondaryFont")
-	if !exists {
-		return false
-	}
+	// optional
+	collection.Options.PrimaryFont, _ = AssertKeyValue(w, m, "primaryFont")
+	collection.Options.SecondaryFont, _ = AssertKeyValue(w, m, "secondaryFont")
 
 	collection.Options.MaxMint, exists = AssertKeyValueInt(w, m, "maxMint")
 	if !exists {
