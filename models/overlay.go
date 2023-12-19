@@ -10,10 +10,11 @@ type Overlay struct {
 
 func (layer *Layer) NewOverlay(overlayType, content string, x, y int) *Overlay {
 	c := &Overlay{
-		Meta: layer.Meta.NewInternals("overlays"),
-		Type: overlayType,
-		X:    x,
-		Y:    y,
+		Meta:    layer.Meta.NewInternals("overlays"),
+		Type:    overlayType,
+		Content: content,
+		X:       x,
+		Y:       y,
 	}
 	return c
 }
