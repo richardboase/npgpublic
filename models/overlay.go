@@ -9,9 +9,10 @@ type Overlay struct {
 	Content     string `json:"content" firestore:"content"`
 	X           int    `json:"x" firestore:"x"`
 	Y           int    `json:"y" firestore:"y"`
+	Font        string `json:"font" firestore:"font"`
 }
 
-func (layer *Layer) NewOverlay(description, overlayType, content string, x, y int) *Overlay {
+func (layer *Layer) NewOverlay(description, overlayType, content, font string, x, y int) *Overlay {
 	c := &Overlay{
 		Meta:        layer.Meta.NewInternals("overlays"),
 		Description: description,
@@ -19,6 +20,7 @@ func (layer *Layer) NewOverlay(description, overlayType, content string, x, y in
 		Content:     content,
 		X:           x,
 		Y:           y,
+		Font:        font,
 	}
 	return c
 }
