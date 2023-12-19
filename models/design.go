@@ -1,6 +1,9 @@
 package models
 
-import "fmt"
+import (
+	"strconv"
+	"strings"
+)
 
 type Design struct {
 	Meta       Internals
@@ -16,6 +19,8 @@ func (job *Job) NewDesign(index int) *Design {
 		Meta:  job.Meta.NewInternals("designs"),
 		Index: index,
 	}
-	c.Meta.ID = fmt.Sprintf(".%s-%d", c.Meta.Class, index)
+	parts := strings.Split(c.Meta.ID, "-")
+	parts[len(parts)-1] = strconv.Itoa(index)
+	c.Meta.ID = strings.Join(parts, "-")
 	return c
 }
