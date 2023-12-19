@@ -16,8 +16,9 @@ type Design struct {
 
 func (job *Job) NewDesign(index int) *Design {
 	c := &Design{
-		Meta:  job.Meta.NewInternals("designs"),
-		Index: index,
+		Meta:       job.Meta.NewInternals("designs"),
+		Attributes: map[string]int{},
+		Index:      index,
 	}
 	parts := strings.Split(c.Meta.ID, "-")
 	parts[len(parts)-1] = strconv.Itoa(index)
