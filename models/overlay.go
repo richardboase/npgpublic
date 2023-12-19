@@ -3,20 +3,22 @@ package models
 import "net/http"
 
 type Overlay struct {
-	Meta    Internals
-	Type    string `json:"type" firestore:"type"`
-	Content string `json:"content" firestore:"content"`
-	X       int    `json:"x" firestore:"x"`
-	Y       int    `json:"y" firestore:"y"`
+	Meta        Internals
+	Description string `json:"description" firestore:"description"`
+	Type        string `json:"type" firestore:"type"`
+	Content     string `json:"content" firestore:"content"`
+	X           int    `json:"x" firestore:"x"`
+	Y           int    `json:"y" firestore:"y"`
 }
 
-func (layer *Layer) NewOverlay(overlayType, content string, x, y int) *Overlay {
+func (layer *Layer) NewOverlay(description, overlayType, content string, x, y int) *Overlay {
 	c := &Overlay{
-		Meta:    layer.Meta.NewInternals("overlays"),
-		Type:    overlayType,
-		Content: content,
-		X:       x,
-		Y:       y,
+		Meta:        layer.Meta.NewInternals("overlays"),
+		Description: description,
+		Type:        overlayType,
+		Content:     content,
+		X:           x,
+		Y:           y,
 	}
 	return c
 }
@@ -24,6 +26,10 @@ func (layer *Layer) NewOverlay(overlayType, content string, x, y int) *Overlay {
 func (overlay *Overlay) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
 
 	var exists bool
+	overlay.Description, exists = AssertKeyValue(w, m, "description")
+	if !exists {
+		return false
+	}
 	overlay.Type, exists = AssertKeyValue(w, m, "type")
 	if !exists {
 		return false
