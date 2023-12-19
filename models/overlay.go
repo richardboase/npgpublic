@@ -28,6 +28,10 @@ func (layer *Layer) NewOverlay(description, overlayType, content, font string, x
 func (overlay *Overlay) Validate(w http.ResponseWriter, m map[string]interface{}) bool {
 
 	var exists bool
+	overlay.Font, exists = AssertKeyValue(w, m, "font")
+	if !exists {
+		return false
+	}
 	overlay.Description, exists = AssertKeyValue(w, m, "description")
 	if !exists {
 		return false
