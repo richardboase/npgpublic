@@ -10,9 +10,10 @@ type Overlay struct {
 	X           int    `json:"x" firestore:"x"`
 	Y           int    `json:"y" firestore:"y"`
 	Font        string `json:"font" firestore:"font"`
+	FontSize    int    `json:"fontSize" firestore:"fontSize"`
 }
 
-func (layer *Layer) NewOverlay(description, overlayType, content, font string, x, y int) *Overlay {
+func (layer *Layer) NewOverlay(description, overlayType, content, font string, fontSize, x, y int) *Overlay {
 	c := &Overlay{
 		Meta:        layer.Meta.NewInternals("overlays"),
 		Description: description,
@@ -21,6 +22,7 @@ func (layer *Layer) NewOverlay(description, overlayType, content, font string, x
 		X:           x,
 		Y:           y,
 		Font:        font,
+		FontSize:    fontSize,
 	}
 	return c
 }
@@ -29,6 +31,10 @@ func (overlay *Overlay) Validate(w http.ResponseWriter, m map[string]interface{}
 
 	var exists bool
 	overlay.Font, exists = AssertKeyValue(w, m, "font")
+	if !exists {
+		return false
+	}
+	overlay.FontSize, exists = AssertKeyValueInt(w, m, "fontSize")
 	if !exists {
 		return false
 	}
