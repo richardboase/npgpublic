@@ -6,6 +6,7 @@ type Layer struct {
 	Type  string `json:"type" firestore:"type"`
 	Order int    `json:"order" firestore:"order"`
 	// this is for building the manifest
+	Overlays   []*Overlay
 	Elements   []*Element
 	Attributes *Attribute
 }
