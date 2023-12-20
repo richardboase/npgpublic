@@ -23,8 +23,6 @@ type CollectionOptions struct {
 	MaxMint       int
 	ArtworkWidth  int
 	ArtworkHeight int
-	PrimaryFont   string
-	SecondaryFont string
 }
 
 func (collection *Collection) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -35,10 +33,6 @@ func (collection *Collection) ValidateInput(w http.ResponseWriter, m map[string]
 	if !exists {
 		return false
 	}
-
-	// optional
-	collection.Options.PrimaryFont, _ = AssertKeyValue(w, m, "primaryFont")
-	collection.Options.SecondaryFont, _ = AssertKeyValue(w, m, "secondaryFont")
 
 	collection.Options.MaxMint, exists = AssertKeyValueInt(w, m, "maxMint")
 	if !exists {
