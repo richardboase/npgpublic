@@ -1,7 +1,7 @@
 package models
 
 import (
-	"errors"
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -94,12 +94,20 @@ func (i *Internals) FirestoreCount(app *common.App, collection string) int {
 	return count
 }
 
-func (i *Internals) GetParent(app *common.App, dst interface{}) error {
+func (i *Internals) ParentID() (string, error) {
 	if len(i.Context.Parents) == 0 {
-		return errors.New("GetParent: this object has no parent")
+		return "", fmt.Errorf("%s has no parents", i.Class)
+	}
+	return i.Context.Parents[len(i.Context.Parents)-1], nil
+}
+
+func (i *Internals) GetParent(app *common.App, dst interface{}) error {
+	parentID, err := i.ParentID()
+	if err != nil {
+		return err
 	}
 	parent := &Internals{
-		ID: i.Context.Parents[len(i.Context.Parents)-1],
+		ID: parentID,
 	}
 	doc, err := parent.Firestore(app).Get(app.Context())
 	if err != nil {
