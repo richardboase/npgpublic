@@ -22,6 +22,16 @@ func AssertKeyValue(w http.ResponseWriter, m map[string]interface{}, key string)
 	return s, true
 }
 
+func AssertKeyValueSTRING(w http.ResponseWriter, m map[string]interface{}, key string) (string, bool) {
+	s, ok := m[key].(string)
+	if !ok {
+		err := fmt.Errorf("'%s' is required for this request", key)
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return s, false
+	}
+	return s, true
+}
+
 func AssertArrayOfStrings(w http.ResponseWriter, m map[string]interface{}, key string) ([]string, bool) {
 	a, ok := m[key].([]interface{})
 	if !ok {
@@ -52,6 +62,16 @@ func AssertKeyValueFloat(w http.ResponseWriter, m map[string]interface{}, key st
 	return f, true
 }
 
+func AssertKeyValueFLOAT64(w http.ResponseWriter, m map[string]interface{}, key string) (float64, bool) {
+	f, ok := m[key].(float64)
+	if !ok {
+		err := fmt.Errorf("'%s' is required for this request", key)
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return 0, false
+	}
+	return f, true
+}
+
 func AssertKeyValueBool(w http.ResponseWriter, m map[string]interface{}, key string) (bool, bool) {
 	v, ok := m[key].(bool)
 	if !ok {
@@ -62,7 +82,27 @@ func AssertKeyValueBool(w http.ResponseWriter, m map[string]interface{}, key str
 	return v, true
 }
 
+func AssertKeyValueBOOL(w http.ResponseWriter, m map[string]interface{}, key string) (bool, bool) {
+	v, ok := m[key].(bool)
+	if !ok {
+		err := fmt.Errorf("'%s' is required for this request", key)
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false, false
+	}
+	return v, true
+}
+
 func AssertKeyValueInt(w http.ResponseWriter, m map[string]interface{}, key string) (int, bool) {
+	v, ok := m[key].(float64)
+	if !ok {
+		err := fmt.Errorf("'%s' is required for this request", key)
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return 0, false
+	}
+	return int(v), true
+}
+
+func AssertKeyValueINT(w http.ResponseWriter, m map[string]interface{}, key string) (int, bool) {
 	v, ok := m[key].(float64)
 	if !ok {
 		err := fmt.Errorf("'%s' is required for this request", key)
