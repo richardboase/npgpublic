@@ -16,6 +16,13 @@ func (app *App) UseGCP(projectID string) {
 	app.GCPClients.Lock()
 	defer app.GCPClients.Unlock()
 	app.GCPClients.projectID = projectID
+	app.GCPClients.firestoreDatabase = "(default)"
+}
+
+func (app *App) UseGCPFirestore(databaseID string) {
+	app.GCPClients.Lock()
+	defer app.GCPClients.Unlock()
+	app.GCPClients.firestoreDatabase = databaseID
 }
 
 // UseCBOR is an efficient encoding package, check it out

@@ -9,16 +9,15 @@ import (
 	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go/v4"
-	"github.com/ninjapunkgirls/sdk/graph"
 )
 
 type GCPClients struct {
-	projectID string
-	storage   *storage.Client
-	firebase  *firebase.App
-	firestore *firestore.Client
-	pubsub    *pubsub.Client
-	graph     map[string]*graph.GraphClient
+	projectID         string
+	storage           *storage.Client
+	firebase          *firebase.App
+	firestore         *firestore.Client
+	pubsub            *pubsub.Client
+	firestoreDatabase string
 	sync.RWMutex
 }
 
@@ -53,7 +52,29 @@ func (self *GCPClients) Firestore() *firestore.Client {
 		if err != nil {
 			log.Fatalln(err)
 		}
+		self.Unlock()
+		return self.firestore
+	}
+
+	return client
+}
+
+// Firestore exposes and initalises the firestore db
+func (self *GCPClients) Database() *firestore.Client {
+
+	self.RLock()
+	client := self.firestore
+	self.RUnlock()
+
+	if client == nil {
+		self.Lock()
 		defer self.Unlock()
+		var err error
+		ctx := context.Background()
+		client, err = firestore.NewClientWithDatabase(ctx, self.projectID, self.firestoreDatabase)
+		if err != nil {
+			log.Fatalf("Failed to create Firestore client with database: %s %v", self.firestoreDatabase, err)
+		}
 		return self.firestore
 	}
 
@@ -73,7 +94,7 @@ func (self *GCPClients) GCS() *storage.Client {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		defer self.Unlock()
+		self.Unlock()
 		return self.storage
 	}
 
@@ -93,7 +114,7 @@ func (self *GCPClients) PubSub() *pubsub.Client {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer self.Unlock()
+		self.Unlock()
 		return self.pubsub
 	}
 
