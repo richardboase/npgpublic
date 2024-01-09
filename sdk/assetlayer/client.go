@@ -12,14 +12,14 @@ type Client struct {
 	host    string
 }
 
-func NewClient(host, secret, token string) *Client {
+func NewClient(secret, token string) *Client {
 	return &Client{
 		resty: resty.New(),
 		headers: map[string]string{
 			"appsecret": secret,
 			"didtoken":  token,
 		},
-		host: host,
+		host: "https://api-v2.assetlayer.com",
 	}
 }
 
@@ -27,6 +27,10 @@ func (client *Client) URL(path string) string {
 	return fmt.Sprintf("%s/%s", client.host, path)
 }
 
-func (client *Client) NewRequest(path string) *resty.Request {
-	return client.resty.R()
+func (client *Client) NewRequest() *resty.Request {
+	r := client.resty.R()
+	for k, v := range client.headers {
+		r = r.SetHeader(k, v)
+	}
+	return r
 }
