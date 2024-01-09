@@ -2,7 +2,6 @@ package assetlayer
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type Slot struct {
@@ -18,6 +17,33 @@ type Slot struct {
 	CreatedAt            int64         `json:"createdAt"`
 	UpdatedAt            int64         `json:"updatedAt"`
 	SlotID               string        `json:"slotId"`
+}
+
+func (client *Client) NewSlot(name, description, image string) (string, error) {
+
+	slot := &Slot{
+		AppID:       client.appID,
+		SlotName:    name,
+		Description: description,
+		SlotImage:   image,
+		//
+		AcceptingCollections: true,
+		IsPublic:             true,
+	}
+
+	data, err := client.Try("POST", "/api/v1/slot/new", nil, slot)
+	if err != nil {
+		return "", err
+	}
+	m, err := assertMapStringInterface(data)
+	if err != nil {
+		return "", err
+	}
+	id, err := assertString(m["slotId"])
+	if err != nil {
+		return "", err
+	}
+	return id, nil
 }
 
 func (client *Client) GetSlots() ([]*Slot, error) {
@@ -62,31 +88,4 @@ func (client *Client) GetSlots() ([]*Slot, error) {
 	}
 
 	return slots, nil
-}
-
-func (client *Client) NewSlot(name, description, image string) (string, error) {
-
-	slot := &Slot{
-		AppID:       client.appID,
-		SlotName:    name,
-		Description: description,
-		SlotImage:   image,
-		//
-		AcceptingCollections: true,
-		IsPublic:             true,
-	}
-
-	data, err := client.Try("POST", "/api/v1/slot/new", nil, slot)
-	if err != nil {
-		return "", err
-	}
-	m, ok := data.(map[string]interface{})
-	if !ok {
-		return "", fmt.Errorf("failed to assert type: %v", data)
-	}
-	id := m["slotId"].(string)
-	if !ok {
-		return "", fmt.Errorf("failed to assert type: %v", m["slotId"])
-	}
-	return id, nil
 }

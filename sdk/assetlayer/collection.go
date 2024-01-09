@@ -35,7 +35,7 @@ func (client *Client) NewCollection(collectionType, name, description, image str
 	if err != nil {
 		return "", err
 	}
-	id, err := assertString(m["slotId"])
+	id, err := assertString(m["collectionId"])
 	if err != nil {
 		return "", err
 	}
