@@ -26,7 +26,7 @@ func NewClient(id, secret, token string) *Client {
 }
 
 func (client *Client) URL(path string) string {
-	return fmt.Sprintf("%s/%s", client.host, path)
+	return fmt.Sprintf("%s%s", client.host, path)
 }
 
 func (client *Client) NewRequest() *resty.Request {

@@ -22,18 +22,29 @@ type Slot struct {
 
 func (client *Client) GetSlots() ([]*Slot, error) {
 
-	data, err := client.Try("GET", "/api/slots")
+	data, err := client.Try(
+		"GET",
+		"/api/v1/app/slots",
+		map[string]string{
+			"appId":  client.appID,
+			"idOnly": "false",
+		},
+	)
 	if err != nil {
 		return nil, err
 	}
-	app, ok := data.(map[string]interface{})
-	if !ok {
-		return nil, fmt.Errorf("failed to assert type: %v", data)
-	}
 
-	s, ok := app["slots"].([]interface{})
-	if !ok {
-		return nil, fmt.Errorf("failed to get slot array")
+	m, err := assertMapStringInterface(data)
+	if err != nil {
+		return nil, err
+	}
+	app, err := assertMapStringInterface(m["app"])
+	if err != nil {
+		return nil, err
+	}
+	s, err := assertInterfaceArray(app["slots"])
+	if err != nil {
+		return nil, err
 	}
 
 	slots := []*Slot{}
@@ -47,6 +58,7 @@ func (client *Client) GetSlots() ([]*Slot, error) {
 		if err := json.Unmarshal(b, slot); err != nil {
 			return nil, err
 		}
+		slots = append(slots, slot)
 	}
 
 	return slots, nil
@@ -64,7 +76,7 @@ func (client *Client) NewSlot(name, description, image string) (string, error) {
 		IsPublic:             true,
 	}
 
-	data, err := client.Try("POST", "/api/v1/slot/new", slot)
+	data, err := client.Try("POST", "/api/v1/slot/new", nil, slot)
 	if err != nil {
 		return "", err
 	}
