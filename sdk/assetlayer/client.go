@@ -7,13 +7,15 @@ import (
 )
 
 type Client struct {
+	appID   string
 	resty   *resty.Client
 	headers map[string]string
 	host    string
 }
 
-func NewClient(secret, token string) *Client {
+func NewClient(id, secret, token string) *Client {
 	return &Client{
+		appID: id,
 		resty: resty.New(),
 		headers: map[string]string{
 			"appsecret": secret,
