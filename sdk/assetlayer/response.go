@@ -36,3 +36,15 @@ func assertInterfaceArray(x interface{}) ([]interface{}, error) {
 	}
 	return m, nil
 }
+
+func assertString(x interface{}) (string, error) {
+	s, ok := x.(string)
+	if !ok {
+		t := "nil"
+		if x != nil {
+			t = reflect.TypeOf(x).String()
+		}
+		return "", fmt.Errorf("assertString: failed to assert type: %s", t)
+	}
+	return s, nil
+}

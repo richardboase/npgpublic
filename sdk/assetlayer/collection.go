@@ -1,12 +1,15 @@
 package assetlayer
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Collection struct {
+	CollectionID string `json:"slotId"`
+	//
 	CollectionName   string                 `json:"collectionName"`
 	Description      string                 `json:"description"`
 	Type             string                 `json:"type"`
-	SlotID           string                 `json:"slotId"`
 	Maximum          int                    `json:"maximum"`
 	Tags             []string               `json:"tags"`
 	RoyaltyRecipient string                 `json:"royaltyRecipient"`
@@ -14,9 +17,29 @@ type Collection struct {
 	CollectionImage  string                 `json:"collectionImage"`
 }
 
-func (client *Client) NewCollection() (string, error) {
-	collection := &Collection{}
-	return collection.CollectionName, nil
+func (client *Client) NewCollection(collectionType, name, description, image string, maximum int) (string, error) {
+
+	collection := &Collection{
+		Type:            collectionType,
+		CollectionName:  name,
+		Description:     description,
+		CollectionImage: image,
+		Maximum:         maximum,
+	}
+
+	data, err := client.Try("POST", "/api/v1/collection/new", nil, collection)
+	if err != nil {
+		return "", err
+	}
+	m, err := assertMapStringInterface(data)
+	if err != nil {
+		return "", err
+	}
+	id, err := assertString(m["slotId"])
+	if err != nil {
+		return "", err
+	}
+	return id, nil
 }
 
 func (client *Client) GetCollections(slotID string) ([]*Collection, error) {

@@ -7,16 +7,19 @@ import (
 )
 
 func (client *Client) Try(method, path string, query map[string]string, body ...interface{}) (interface{}, error) {
+
+	url := client.URL(path)
+	println(method, url)
+
 	response := &Response{}
 	r := client.NewRequest().EnableTrace().SetResult(response)
 	if query != nil {
 		r = r.SetQueryParams(query)
+		pretty.Println(query)
 	}
 	if len(body) > 0 {
 		r = r.SetBody(body[0])
 	}
-	url := client.URL(path)
-	println(method, url)
 	resp, err := r.Execute(method, url)
 	if err != nil {
 		return nil, err
