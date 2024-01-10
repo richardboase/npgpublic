@@ -5,21 +5,25 @@ import (
 )
 
 type Collection struct {
-	CollectionID string `json:"slotId"`
+	SlotID       string `json:"slotId"`
+	CollectionID string `json:"collectionId"`
 	//
 	CollectionName   string                 `json:"collectionName"`
+	CollectionImage  string                 `json:"collectionImage"`
+	CollectionBanner string                 `json:"collectionBanner"`
 	Description      string                 `json:"description"`
 	Type             string                 `json:"type"`
 	Maximum          int                    `json:"maximum"`
 	Tags             []string               `json:"tags"`
 	RoyaltyRecipient string                 `json:"royaltyRecipient"`
 	Properties       map[string]interface{} `json:"properties"`
-	CollectionImage  string                 `json:"collectionImage"`
 }
 
-func (client *Client) NewCollection(collectionType, name, description, image string, maximum int) (string, error) {
+func (client *Client) NewCollection(slotID, collectionType, name, description, image string, maximum int) (string, error) {
 
 	collection := &Collection{
+		SlotID: slotID,
+		// Identical or Unique
 		Type:            collectionType,
 		CollectionName:  name,
 		Description:     description,
