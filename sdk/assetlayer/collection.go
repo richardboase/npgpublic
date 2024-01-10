@@ -2,6 +2,8 @@ package assetlayer
 
 import (
 	"encoding/json"
+
+	"github.com/kr/pretty"
 )
 
 type Collection struct {
@@ -19,6 +21,37 @@ type Collection struct {
 	Properties       map[string]interface{} `json:"properties"`
 }
 
+func (client *Client) DeactivateCollection(collectionID string) error {
+	_, err := client.Try(
+		"PUT",
+		"/api/v1/collection/deactivate",
+		map[string]string{
+			"collectionId": collectionID,
+		},
+	)
+	return err
+}
+
+func (client *Client) EnsureCollectionExists(slotID, collectionType, name, description, image string, maximum int, properties map[string]interface{}) (string, error) {
+	collections, err := client.GetCollections(slotID)
+	if err != nil {
+		return "", err
+	}
+	exists := false
+	var collection *Collection
+	for _, collection = range collections {
+		if collection.CollectionName == name {
+			exists = true
+			break
+		}
+	}
+	if exists {
+		println("returning existing collection: " + collection.CollectionID)
+		return collection.CollectionID, nil
+	}
+	return client.NewCollection(slotID, collectionType, name, description, image, maximum, properties)
+}
+
 func (client *Client) NewCollection(slotID, collectionType, name, description, image string, maximum int, properties map[string]interface{}) (string, error) {
 
 	collection := &Collection{
@@ -31,6 +64,8 @@ func (client *Client) NewCollection(slotID, collectionType, name, description, i
 		Maximum:         maximum,
 		Properties:      properties,
 	}
+
+	pretty.Println(collection)
 
 	data, err := client.Try("POST", "/api/v1/collection/new", nil, collection)
 	if err != nil {

@@ -15,3 +15,15 @@ type App struct {
 	UpdatedAt     int64   `json:"updatedAt"`
 	Slots         []*Slot `json:"slots"`
 }
+
+func (client *Client) NewAppWallet(handle string) error {
+	_, err := client.Try(
+		"POST",
+		"/api/v1/asset/expressionValues",
+		nil,
+		map[string]interface{}{
+			"appHandle": handle,
+		},
+	)
+	return err
+}

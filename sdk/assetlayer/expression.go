@@ -16,16 +16,20 @@ type Expression struct {
 		} `json:"expressionAttributes"`
 		ExpressionTypeID string `json:"expressionTypeId"`
 	} `json:"expressionType"`
-	Description string `json:"description,omitempty"`
+	Description      string `json:"description,omitempty"`
+	ExpressionTypeID string `json:"expressionTypeId"`
 }
 
-func (client *Client) NewExpression(slotID, name, description, image string) (string, error) {
+func (client *Client) NewExpression(slotID, name string) (string, error) {
 
-	slot := &Expression{
-		SlotID: slotID,
+	expression := &Expression{
+		SlotID:           slotID,
+		ExpressionTypeID: "6281963ab23c7bf548942139",
+		ExpressionName:   name,
+		Description:      "test description",
 	}
 
-	data, err := client.Try("POST", "/api/v1/slot/expressions/new", nil, slot)
+	data, err := client.Try("POST", "/api/v1/slot/expressions/new", nil, expression)
 	if err != nil {
 		return "", err
 	}
@@ -33,7 +37,7 @@ func (client *Client) NewExpression(slotID, name, description, image string) (st
 	if err != nil {
 		return "", err
 	}
-	id, err := assertString(m["slotId"])
+	id, err := assertString(m["expressionId"])
 	if err != nil {
 		return "", err
 	}

@@ -31,6 +31,26 @@ func (client *Client) DeleteSlot(slotID string) error {
 	return err
 }
 
+func (client *Client) EnsureSlotExists(name, description, image string) (string, error) {
+	slots, err := client.GetSlots()
+	if err != nil {
+		return "", err
+	}
+	exists := false
+	var slot *Slot
+	for _, slot = range slots {
+		if slot.SlotName == name {
+			exists = true
+			break
+		}
+	}
+	if exists {
+		println("returning existing slot: " + slot.SlotID)
+		return slot.SlotID, nil
+	}
+	return client.NewSlot(name, description, image)
+}
+
 func (client *Client) NewSlot(name, description, image string) (string, error) {
 
 	slot := &Slot{
