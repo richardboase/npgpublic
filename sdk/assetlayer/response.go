@@ -9,8 +9,7 @@ type Response struct {
 	StatusCode int         `json:"statusCode"`
 	Success    bool        `json:"success"`
 	Body       interface{} `json:"body"`
-	Error      string      `json:"error"`
-	Errors     string      `json:"errors"`
+	Message    string      `json:"message"`
 }
 
 func assertMapStringInterface(x interface{}) (map[string]interface{}, error) {

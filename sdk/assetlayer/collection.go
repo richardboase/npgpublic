@@ -15,11 +15,11 @@ type Collection struct {
 	Type             string                 `json:"type"`
 	Maximum          int                    `json:"maximum"`
 	Tags             []string               `json:"tags"`
-	RoyaltyRecipient string                 `json:"royaltyRecipient"`
+	RoyaltyRecipient map[string]interface{} `json:"royaltyRecipient"`
 	Properties       map[string]interface{} `json:"properties"`
 }
 
-func (client *Client) NewCollection(slotID, collectionType, name, description, image string, maximum int) (string, error) {
+func (client *Client) NewCollection(slotID, collectionType, name, description, image string, maximum int, properties map[string]interface{}) (string, error) {
 
 	collection := &Collection{
 		SlotID: slotID,
@@ -29,6 +29,7 @@ func (client *Client) NewCollection(slotID, collectionType, name, description, i
 		Description:     description,
 		CollectionImage: image,
 		Maximum:         maximum,
+		Properties:      properties,
 	}
 
 	data, err := client.Try("POST", "/api/v1/collection/new", nil, collection)

@@ -12,7 +12,7 @@ func (client *Client) Try(method, path string, query map[string]string, body ...
 	println(method, url)
 
 	response := &Response{}
-	r := client.NewRequest().EnableTrace().SetResult(response)
+	r := client.NewRequest().EnableTrace().SetResult(response).SetError(response)
 	if query != nil {
 		r = r.SetQueryParams(query)
 		pretty.Println(query)

@@ -15,16 +15,3 @@ type App struct {
 	UpdatedAt     int64   `json:"updatedAt"`
 	Slots         []*Slot `json:"slots"`
 }
-type Expression struct {
-	ExpressionName string `json:"expressionName"`
-	ExpressionID   string `json:"expressionId"`
-	ExpressionType struct {
-		ExpressionTypeName   string `json:"expressionTypeName"`
-		ExpressionAttributes []struct {
-			ExpressionAttributeName string `json:"expressionAttributeName"`
-			ExpressionAttributeID   string `json:"expressionAttributeId"`
-		} `json:"expressionAttributes"`
-		ExpressionTypeID string `json:"expressionTypeId"`
-	} `json:"expressionType"`
-	Description string `json:"description,omitempty"`
-}

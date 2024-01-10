@@ -19,6 +19,18 @@ type Slot struct {
 	SlotID               string        `json:"slotId"`
 }
 
+func (client *Client) DeleteSlot(slotID string) error {
+	_, err := client.Try(
+		"POST",
+		"/api/v1/slot/remove",
+		map[string]string{
+			"appId":  client.appID,
+			"slotId": slotID,
+		},
+	)
+	return err
+}
+
 func (client *Client) NewSlot(name, description, image string) (string, error) {
 
 	slot := &Slot{
