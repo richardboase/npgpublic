@@ -19,7 +19,7 @@ type App struct {
 func (client *Client) NewAppWallet(handle string) error {
 	_, err := client.Try(
 		"POST",
-		"/api/v1/asset/expressionValues",
+		"/api/v1/app/newAppWallet",
 		nil,
 		map[string]interface{}{
 			"appHandle": handle,

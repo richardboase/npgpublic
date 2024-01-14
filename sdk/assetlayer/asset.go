@@ -7,7 +7,22 @@ import (
 	"net/http"
 )
 
+type User struct {
+	UserID         string `json:"userId"`
+	Handle         string `json:"handle"`
+	HandcashHandle string `json:"handcashHandle"`
+}
+
 type Asset struct {
+	AssetID          string                            `json:"assetId"`
+	Serial           int                               `json:"serial"`
+	CollectionID     string                            `json:"collectionId"`
+	CollectionName   string                            `json:"collectionName"`
+	User             User                              `json:"user"`
+	CreatedAt        int64                             `json:"createdAt"`
+	UpdatedAt        int64                             `json:"updatedAt"`
+	Properties       map[string]map[string]interface{} `json:"properties"`
+	ExpressionValues []interface{}                     `json:"expressionValues"`
 }
 
 func (client *Client) MintAssets(collectionID string, quantity int) ([]string, error) {
