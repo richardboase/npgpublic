@@ -22,7 +22,7 @@ func HandleCORS(w http.ResponseWriter, r *http.Request, origin string) bool {
 	w.Header().Set("Access-Control-Allow-Origin", origin)
 	w.Header().Set("Cache-Control", "no-store")
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		w.WriteHeader(http.StatusNoContent)
 		return true
