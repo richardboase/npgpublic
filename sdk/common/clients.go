@@ -8,6 +8,7 @@ import (
 
 	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/gin-gonic/gin"
+	"github.com/richardboase/npgpublic/sdk/assetlayer"
 )
 
 func (app *App) newClients() Clients {
@@ -21,6 +22,7 @@ type Clients struct {
 	gin        *gin.Engine
 	httpClient *http.Client
 	algolia    *search.Client
+	assetlayer *assetlayer.Client
 	sync.RWMutex
 }
 
@@ -70,6 +72,24 @@ func (self *Clients) HTTP() *http.Client {
 
 func (self *Clients) Algolia() *search.Client {
 	return self.algolia
+}
+
+func (self *Clients) Assetlayer(appID, appSecret, didToken string) *assetlayer.Client {
+	self.RLock()
+	client := self.assetlayer
+	self.RUnlock()
+
+	if client == nil {
+		self.Lock()
+		self.assetlayer = assetlayer.NewClient(
+			appID,
+			appSecret,
+			didToken,
+		)
+		defer self.Unlock()
+		return self.assetlayer
+	}
+	return self.assetlayer
 }
 
 /*
