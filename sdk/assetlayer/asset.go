@@ -26,6 +26,22 @@ type Asset struct {
 	ExpressionValues []interface{}                     `json:"expressionValues"`
 }
 
+func (client *Client) SendAsset(assetID, receiverHandle string) error {
+	log.Printf("sending asset: %s to %s", assetID, receiverHandle)
+	if _, err := client.Try(
+		"POST",
+		"/api/v1/asset/mint",
+		nil,
+		map[string]interface{}{
+			"assetId":  assetID,
+			"receiver": receiverHandle,
+		},
+	); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (client *Client) MintAssets(collectionID string, quantity int) ([]string, error) {
 
 	log.Println("minting collection:" + collectionID)
