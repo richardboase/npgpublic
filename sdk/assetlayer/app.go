@@ -16,8 +16,8 @@ type App struct {
 	Slots         []*Slot `json:"slots"`
 }
 
-func (client *Client) NewAppWallet(handle string) error {
-	_, err := client.Try(
+func (client *Client) NewAppWallet(handle string) (string, error) {
+	data, err := client.Try(
 		"POST",
 		"/api/v1/app/newAppWallet",
 		nil,
@@ -25,5 +25,18 @@ func (client *Client) NewAppWallet(handle string) error {
 			"appHandle": handle,
 		},
 	)
-	return err
+	if err != nil {
+		return "", err
+	}
+
+	m, err := assertMapStringInterface(data)
+	if err != nil {
+		return "", err
+	}
+	s, err := assertString(m["userId"])
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
 }
