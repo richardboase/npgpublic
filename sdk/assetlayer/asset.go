@@ -3,6 +3,7 @@ package assetlayer
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -61,6 +62,47 @@ func (client *Client) MintAssets(collectionID string, quantity int) ([]string, e
 	}
 
 	return ids, nil
+}
+
+func (client *Client) AssetUser(idOnly, countsOnly bool) ([]*Asset, error) {
+
+	data, err := client.Try(
+		"GET",
+		"/api/v1/asset/user",
+		map[string]string{
+			"idOnly":     fmt.Sprintf("%v", idOnly),
+			"countsOnly": fmt.Sprintf("%v", countsOnly),
+		},
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	m, err := assertMapStringInterface(data)
+	if err != nil {
+		return nil, err
+	}
+	a, err := assertInterfaceArray(m["assets"])
+	if err != nil {
+		return nil, err
+	}
+
+	assets := []*Asset{}
+
+	for _, item := range a {
+		b, err := json.Marshal(item)
+		if err != nil {
+			return nil, err
+		}
+		asset := &Asset{}
+		if err := json.Unmarshal(b, asset); err != nil {
+			return nil, err
+		}
+		assets = append(assets, asset)
+	}
+
+	return assets, nil
 }
 
 func (client *Client) AssetUpdate(assetID string, properties map[string]interface{}) error {
