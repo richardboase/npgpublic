@@ -64,14 +64,15 @@ func (client *Client) MintAssets(collectionID string, quantity int) ([]string, e
 	return ids, nil
 }
 
-func (client *Client) AssetUser(idOnly, countsOnly bool) ([]*Asset, error) {
+func (client *Client) AssetUser(walletID string, idOnly, countsOnly bool) ([]*Asset, error) {
 
 	data, err := client.Try(
 		"GET",
 		"/api/v1/asset/user",
 		map[string]string{
-			"idOnly":     fmt.Sprintf("%v", idOnly),
-			"countsOnly": fmt.Sprintf("%v", countsOnly),
+			"idOnly":       fmt.Sprintf("%v", idOnly),
+			"countsOnly":   fmt.Sprintf("%v", countsOnly),
+			"walletUserId": walletID,
 		},
 		nil,
 	)
