@@ -64,22 +64,40 @@ func (client *Client) MintAssets(collectionID string, quantity int) ([]string, e
 	return ids, nil
 }
 
-func (client *Client) AssetUser(walletID string, idOnly, countsOnly bool) ([]*Asset, error) {
-
+func (client *Client) GetAssets(idOnly, countsOnly bool) ([]*Asset, error) {
 	data, err := client.Try(
 		"GET",
 		"/api/v1/asset/user",
 		map[string]string{
-			"idOnly":       fmt.Sprintf("%v", idOnly),
-			"countsOnly":   fmt.Sprintf("%v", countsOnly),
-			"walletUserId": walletID,
+			"idOnly":     fmt.Sprintf("%v", idOnly),
+			"countsOnly": fmt.Sprintf("%v", countsOnly),
 		},
 		nil,
 	)
 	if err != nil {
 		return nil, err
 	}
+	return client.getAssets(data)
+}
 
+func (client *Client) GetWalletAssets(walletUserId string, idOnly, countsOnly bool) ([]*Asset, error) {
+	data, err := client.Try(
+		"GET",
+		"/api/v1/asset/user",
+		map[string]string{
+			"idOnly":       fmt.Sprintf("%v", idOnly),
+			"countsOnly":   fmt.Sprintf("%v", countsOnly),
+			"walletUserId": walletUserId,
+		},
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return client.getAssets(data)
+}
+
+func (client *Client) getAssets(data interface{}) ([]*Asset, error) {
 	m, err := assertMapStringInterface(data)
 	if err != nil {
 		return nil, err
@@ -88,9 +106,7 @@ func (client *Client) AssetUser(walletID string, idOnly, countsOnly bool) ([]*As
 	if err != nil {
 		return nil, err
 	}
-
 	assets := []*Asset{}
-
 	for _, item := range a {
 		b, err := json.Marshal(item)
 		if err != nil {
@@ -102,7 +118,6 @@ func (client *Client) AssetUser(walletID string, idOnly, countsOnly bool) ([]*As
 		}
 		assets = append(assets, asset)
 	}
-
 	return assets, nil
 }
 
