@@ -70,39 +70,10 @@ func (self *Clients) HTTP() *http.Client {
 	return client
 }
 
-func (self *Clients) Algolia() *search.Client {
-	return self.algolia
+func (clients *Clients) Algolia() *search.Client {
+	return clients.algolia
 }
 
-func (self *Clients) Assetlayer(appID, appSecret, didToken string) *assetlayer.Client {
-	self.RLock()
-	client := self.assetlayer
-	self.RUnlock()
-
-	if client == nil {
-		self.Lock()
-		self.assetlayer = assetlayer.NewClient(
-			appID,
-			appSecret,
-			didToken,
-		)
-		defer self.Unlock()
-		return self.assetlayer
-	}
-	return self.assetlayer
+func (clients *Clients) Assetlayer() *assetlayer.Client {
+	return clients.assetlayer
 }
-
-/*
-func (self *Clients) FirestoreGraph(dbNames ...string) *graph.GraphClient {
-	if len(dbNames) > 0 {
-		dbName := dbNames[0]
-		self.Lock()
-		defer self.Unlock()
-		if self.graph[dbName] == nil {
-			self.graph[dbName] = graph.NewClient(self.firestore, dbName)
-		}
-		return self.graph[dbName]
-	}
-	return self.graph["_"]
-}
-*/

@@ -6,6 +6,7 @@ import (
 
 	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/fxamacker/cbor/v2"
+	"github.com/richardboase/npgpublic/sdk/assetlayer"
 )
 
 // UseGCP grants the conditions for the GCP services clients
@@ -49,4 +50,14 @@ func (app *App) UseJWT(signingKey string) {
 	app.Lock()
 	defer app.Unlock()
 	app.jwtSigningKey = []byte(signingKey)
+}
+
+func (app *App) UseAssetlayer(appID, appSecret, didToken string) {
+	app.Lock()
+	defer app.Unlock()
+	app.Clients.assetlayer = assetlayer.NewClient(
+		appID,
+		appSecret,
+		didToken,
+	)
 }
