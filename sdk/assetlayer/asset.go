@@ -30,7 +30,7 @@ func (client *Client) SendAsset(assetID, receiverHandle string) error {
 	log.Printf("sending asset: %s to %s", assetID, receiverHandle)
 	if _, err := client.Try(
 		"POST",
-		"/api/v1/asset/mint",
+		"/api/v1/asset/send",
 		nil,
 		map[string]interface{}{
 			"assetId":  assetID,
