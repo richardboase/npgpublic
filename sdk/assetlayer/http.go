@@ -11,6 +11,10 @@ func (client *Client) Try(method, path string, query map[string]string, body ...
 	url := client.URL(path)
 	println(method, url)
 
+	if query != nil {
+		pretty.Println(query)
+	}
+
 	response := &Response{}
 	r := client.NewRequest().EnableTrace().SetResult(response).SetError(response)
 	if query != nil {
