@@ -26,6 +26,25 @@ type Asset struct {
 	ExpressionValues []interface{}                     `json:"expressionValues"`
 }
 
+func (client *Client) AssetInfo(assetID string) (*Asset, error) {
+	data, err := client.Try(
+		"GET",
+		"/api/v1/asset/info",
+		nil,
+		map[string]interface{}{
+			"assetId": assetID,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	assets, err := client.getAssets(data)
+	if err != nil {
+		return nil, err
+	}
+	return assets[0], nil
+}
+
 func (client *Client) SendAsset(assetID, receiverHandle string) error {
 	log.Printf("sending asset: %s to %s", assetID, receiverHandle)
 	if _, err := client.Try(
