@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+	"github.com/golangdaddy/leap/sdk/common"
 	"github.com/google/uuid"
-	"github.com/richardboase/npgpublic/sdk/common"
 	"google.golang.org/api/iterator"
 )
 
@@ -128,6 +128,7 @@ func (i *Internals) Update() {
 }
 
 type Context struct {
+	AI      string
 	Parent  string
 	Parents []string
 	Country string
